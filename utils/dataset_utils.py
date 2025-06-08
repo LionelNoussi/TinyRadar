@@ -208,7 +208,7 @@ def preprocess_in_chunks(dataset_args: DatasetArgs, chunk_size=100):
         preprocessed_inputs.flush()
 
         # Update global max
-        chunk_max = chunk_fft.max()
+        chunk_max = np.abs(chunk_fft).max()
         if chunk_max > global_max:
             global_max = chunk_max
 

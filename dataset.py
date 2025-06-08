@@ -248,8 +248,6 @@ def get_dataset(dataset_args: DatasetArgs, rebuild=False, preprocess_again=False
 if __name__ == '__main__':
     cmd_args = CommandLineArgs()
     args = get_args(cmd_args.config)
-    print(args)
-    input()
     logger = setup_logger(args.logging_args)
-    dataset = get_dataset(args.dataset_args, rebuild=True, preprocess_again=False, train_val_test_split_again=True)
+    dataset = get_dataset(args.dataset_args, rebuild=False, preprocess_again=True, train_val_test_split_again=False)
     pass
