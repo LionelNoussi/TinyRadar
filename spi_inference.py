@@ -1,9 +1,10 @@
-import spidev
-import time
-import os
-from utils.CommandArgs import CommandLineArgs
+import os, random, time
+import numpy as np
+
 from args import get_args
+from utils.CommandArgs import CommandLineArgs
 from utils.logging_utils import setup_logger
+from utils.spi_utils import SPIInterface
 
 
 class CmdArgs(CommandLineArgs):
@@ -16,19 +17,33 @@ def main(cmd_args):
 	args = get_args(cmd_args.config)
 	logger = setup_logger(args.logging_args)
     
-    frames_path = os.path.join(args.dataset_args.built_dataset_path, 'test/frames.npy')
+	frames_path = os.path.join(args.dataset_args.built_dataset_path, 'test/frames.npy')
 	frames = np.load(frames_path)
 	labels_path = os.path.join(args.dataset_args.built_dataset_path, 'test/txt_labels.npy')
 	labels = np.load(labels_path)
 
-	spi = spidev.SpiDev()
-	spi.open(0, 0)  # Bus 0, CE0
-	spi.max_speed_hz = 500000
-	spi.mode = 0
+	# sample_index = random.randint(0, len(frames))
+	sample_index = 0
+
+	interface = SPIInterface(args.spi_args)
+
 	while True:
-		input("Press enter to send signal:")
-		logger.info("Sending signal via SPI!")
-		spi.xfer2([0xAA])
+		sample_index += 1
+		sample_input, sample_label = (frames[sample_index], labels[sample_index])
+		input("Press Enter to send array:")
+		interface.send([0x02])
+		time.sleep(0.1)
+		response = interface.read_byte()
+		print(f"Response is: {response}")
+		interface.send_array(sample_input)
+		time.sleep(0.1)
+		response = interface.read_byte()
+		print(f"Response is: {response}")
+
+	# while True:
+	# 	input("Press enter to send signal:")
+	# 	logger.info("Sending signal via SPI!")
+	# 	interface.send([0xAA])
 
 
 

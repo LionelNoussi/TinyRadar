@@ -81,10 +81,11 @@ class SerialArgs(HierarchyArgs):
     ready_header: bytes = b'\x04'
 
 class SPIArgs(HierarchyArgs):
-    max_speed_hz: int = 20_000_000
+    max_speed_hz: int = 10_000_000
     mode: int = 0
     rate_hz: int = 160
     frame_size: int = 492 * 2 * 8
+    chunk_limit: int = 4096
 
 
 class Args(HierarchyArgs):
@@ -92,10 +93,10 @@ class Args(HierarchyArgs):
     conversion_args: ConversionArgs = ConversionArgs()
     dataset_args: DatasetArgs = DatasetArgs()
     serial_args: SerialArgs = SerialArgs()
+    spi_args: SPIArgs = SPIArgs()
     logging_args: LoggingArgs = LoggingArgs()
 
 def raspberry_pi_config():
-    print("Generating raspy config!")
     args = Args()
     args.dataset_args.raw_dataset_path = "/media/lionel/LioDrive/Datasets/TinyRadar11G/data"
     args.dataset_args.built_dataset_path = "/media/lionel/LioDrive/Datasets/TinyRadar11G/dataset_11G"
