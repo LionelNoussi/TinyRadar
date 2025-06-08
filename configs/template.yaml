@@ -1,0 +1,80 @@
+model_args:
+  load_model: true  # bool
+  load_model_path: saved_models/saved_model_87.h5  # str
+  tflite_model_path: build/my_model_11G_86p67.tflite  # str
+  save_model: true  # bool
+  save_model_path: saved_models/saved_model.h5  # str
+  checkpoint_dir: saved_models/checkpoints/  # str
+  learning_rate: 0.01  # float
+  batch_size: 32  # int
+  num_epochs: 100  # int
+conversion_args:
+  quantize: true  # bool
+  out_dir: build/  # str
+dataset_args:
+  raw_dataset_path: /Volumes/LioDrive/Datasets/TinyRadar11G/data  # str
+  built_dataset_path: ./datasets/dataset_11G/  # str
+  num_sessions: 5  # int
+  num_instances: 7  # int
+  sweep_frequency: 160  # int
+  range_points_per_sweep: 492  # int
+  stride: 32  # int
+  num_windows: 5  # int
+  sweeps_per_window: 32  # int
+  number_of_extractions: 1  # int
+  time_downsample_rate: 2  # int
+  range_downsample_rate: 6  # int
+  min_sweeps: 32  # int
+  num_people: 25  # int
+  num_single_user_sessions: 1  # int
+  gestures:  # list
+  - PinchIndex  # list
+  - PinchPinky  # list
+  - FingerSlider  # list
+  - FingerRub  # list
+  - SlowSwipeRL  # list
+  - FastSwipeRL  # list
+  - Push  # list
+  - Pull  # list
+  - PalmTilt  # list
+  - Circle  # list
+  - PalmHold  # list
+  shuffle: true  # bool
+  clip: false  # bool
+  clip_percentile: 99.0  # float
+  dataset_shuffle_seed: 0  # int
+  split_based_on_person: false  # bool
+  test_person: '1'  # str
+  val_person: '2'  # str
+  train_split: 0.8  # float
+  val_split: 0.1  # float
+  test_split: 0.1  # float
+serial_args:
+  serial_port: /dev/tty.usbmodem103  # str
+  baudrate: 115200  # int
+  mcu_clock_frequency: 80000000  # int
+  array_size_in_bytes: 13120  # int
+  ser_timeout: 1  # int
+  read_timeout: 20  # int
+  start_signal: !!binary |  # bytes
+    Ag==  # bytes
+  stop_header: !!binary |  # bytes
+    AQ==  # bytes
+  inference_header: !!binary |  # bytes
+    Ag==  # bytes
+  array_header: !!binary |  # bytes
+    AQ==  # bytes
+  uint8_header: !!binary |  # bytes
+    Ag==  # bytes
+  uint32_header: !!binary |  # bytes
+    Aw==  # bytes
+  ready_header: !!binary |  # bytes
+    BA==  # bytes
+logging_args:
+  level: DEBUG  # str
+  log_to_file: true  # bool
+  log_dir_path: logs/  # str
+  file_mode: a  # str
+  log_to_stdout: true  # bool
+  format: '%(asctime)s | %(name)s | %(levelname)s: %(message)s'  # str
+  datefmt: '%H:%M:%S'  # str

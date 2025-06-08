@@ -47,6 +47,9 @@ def main(cmd_args: CmdArgs):
         python_output = q_model.dequantize_outputs(q_python_output)
     python_output_class = np.argmax(python_output[0])
 
+    print(dataset)
+    print(python_output_class)
+    print(sample_label)
     input("Press Enter to Start Experiment")
 
     # Start serial communication with MCU and send start signal

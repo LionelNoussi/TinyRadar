@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 class CommandLineArgs:
-    config: str = 'DEFAULT'
+    config: str = "raspy" # 'DEFAULT'
     _config_help: str = "The path to the configurations to use. DEFAULT usees the default config, not loaded."
     """
     Simplified class to quickly add command line args.

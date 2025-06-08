@@ -12,6 +12,7 @@ from typing import (
 from args import DatasetArgs, get_args
 from utils.logging_utils import setup_logger, get_logger
 from utils.dataset_utils import make_dataset, preprocess_in_chunks
+from utils.CommandArgs import CommandLineArgs
 
 
 class TrainValTestSplit:
@@ -245,7 +246,10 @@ def get_dataset(dataset_args: DatasetArgs, rebuild=False, preprocess_again=False
 
 
 if __name__ == '__main__':
-    args = get_args()
+    cmd_args = CommandLineArgs()
+    args = get_args(cmd_args.config)
+    print(args)
+    input()
     logger = setup_logger(args.logging_args)
-    dataset = get_dataset(args.dataset_args, rebuild=False, preprocess_again=False, train_val_test_split_again=True)
+    dataset = get_dataset(args.dataset_args, rebuild=True, preprocess_again=False, train_val_test_split_again=True)
     pass

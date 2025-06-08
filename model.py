@@ -16,7 +16,6 @@ from keras import models
 from keras import optimizers
 from keras import regularizers
 from keras.callbacks import Callback
-import tensorflow_model_optimization as tfmot
 
 
 class QuantizedModel:
@@ -60,6 +59,7 @@ def get_model(model_args: ModelArgs, quantized: bool = False) -> keras.Model:
         if not quantized:
             return keras.models.load_model(model_args.load_model_path, custom_objects={'dtype': tf.float32}) # type: ignore
         else:
+            import tensorflow_model_optimization as tfmot
             with tfmot.quantization.keras.quantize_scope():
                 return keras.models.load_model(model_args.load_model_path) # type: ignore
 
@@ -86,7 +86,7 @@ def get_model(model_args: ModelArgs, quantized: bool = False) -> keras.Model:
 
         # Less aggressive downsampling early
         layers.Conv2D(12, kernel_size=3, strides=1, padding='same', activation='relu'),
-        layers.Conv2D(12, kernel_size=3, strides=2, padding='same', activation='relu'),
+        layers.Conv2D(12, kernel_size=3, strides=2, pading='same', activation='relu'),
         layers.SpatialDropout2D(0.3),
 
         layers.Conv2D(16, kernel_size=3, strides=1, padding='same', activation='relu'),
@@ -107,6 +107,7 @@ def get_model(model_args: ModelArgs, quantized: bool = False) -> keras.Model:
 
     model.build(input_shape=(None, 16, 82, 10))
     if quantized:
+        import tensorflow_model_optimization as tfmot
         model = tfmot.quantization.keras.quantize_model(model)
 
     model.compile(optimizer='adam',

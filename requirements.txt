@@ -1,4 +1,5 @@
 # python version 3.8.20
+# also install correct tensorflow version for your platform
 absl-py==1.4.0
 annotated-types==0.7.0
 astunparse==1.6.3
@@ -24,7 +25,7 @@ google-auth==2.38.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
 grpcio==1.70.0
-h5py==3.11.0
+# h5py==3.11.0
 idna==3.10
 importlib_metadata==8.5.0
 importlib_resources==6.4.5
@@ -72,8 +73,8 @@ tensorboard==2.10.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
 tensorflow-estimator==2.10.0
-tensorflow-macos==2.10.0
-tensorflow-metal==0.6.0
+# tensorflow-macos==2.10.0
+# tensorflow-metal==0.6.0
 tensorflow-model-optimization==0.8.0
 termcolor==2.4.0
 threadpoolctl==3.5.0

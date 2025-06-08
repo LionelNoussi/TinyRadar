@@ -88,6 +88,13 @@ class Args(HierarchyArgs):
     serial_args: SerialArgs = SerialArgs()
     logging_args: LoggingArgs = LoggingArgs()
 
+def raspberry_pi_config():
+    print("Generating raspy config!")
+    args = Args()
+    args.dataset_args.raw_dataset_path = "/media/lionel/LioDrive/Datasets/TinyRadar11G/data"
+    args.dataset_args.built_dataset_path = "/media/lionel/LioDrive/Datasets/TinyRadar11G/dataset_11G"
+    return args
+
 
 def generate_template_config(out_yaml_file_path: str = 'configs/template.yaml'):
     print(f"Generating template config at {out_yaml_file_path}")
@@ -99,6 +106,8 @@ def generate_template_config(out_yaml_file_path: str = 'configs/template.yaml'):
 def get_args(config_file_name=None) -> Args:
     if config_file_name is None or config_file_name == 'DEFAULT':
        return Args()
+    if config_file_name == "raspy":
+        return raspberry_pi_config()
     args = Args.from_yaml(config_file_name)
     return args
 
