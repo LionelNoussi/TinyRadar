@@ -80,6 +80,12 @@ class SerialArgs(HierarchyArgs):
     uint32_header: bytes = b'\x03'
     ready_header: bytes = b'\x04'
 
+class SPIArgs(HierarchyArgs):
+    max_speed_hz: int = 20_000_000
+    mode: int = 0
+    rate_hz: int = 160
+    frame_size: int = 492 * 2 * 8
+
 
 class Args(HierarchyArgs):
     model_args: ModelArgs = ModelArgs()
