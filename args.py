@@ -9,7 +9,7 @@ class ModelArgs(HierarchyArgs):
     load_model: bool = True
     load_model_path: str = 'saved_models/saved_model_87.h5'
     tflite_model_path: str = 'build/my_model_11G_86p67.tflite'
-    # tflite_model_path: str = 'build/my_model_11G.tflite'
+    # tflite_model_path: str = 'build/my_model.tflite'
     save_model: bool = True
     save_model_path: str = 'saved_models/saved_model.h5'
     checkpoint_dir: str = 'saved_models/checkpoints/'

@@ -209,6 +209,8 @@ def preprocess_in_chunks(dataset_args: DatasetArgs, chunk_size=100):
 
         # Update global max
         chunk_max = np.abs(chunk_fft).max()
+        # STUPID VERSION I USED EARLIER
+        # chunk_max = chunk_fft.max()
         if chunk_max > global_max:
             global_max = chunk_max
 
@@ -216,6 +218,14 @@ def preprocess_in_chunks(dataset_args: DatasetArgs, chunk_size=100):
         if clip:
             flat_chunk = chunk_fft.ravel()
             reservoir_sample(reservoir, flat_chunk, sample_limit, seen)
+
+    # If you don't do np.abs(chunk_fft).max() when calculating the max value,
+    # then you have to do this, in order to get the actual max value, since
+    # otherwise it will be a complex number and when casting it to float,
+    # it will result in simply normalizing with this number instead
+    # z = np.log1p(global_max)
+    # global_max = 1 / (np.real(z)/(np.abs(z)**2)) # type: ignore
+    # global_max = np.expm1(global_max)
 
     if clip:
         global_percentile = np.percentile(reservoir, dataset_args.clip_percentile)
