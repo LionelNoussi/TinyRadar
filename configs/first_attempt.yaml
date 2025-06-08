@@ -1,0 +1,91 @@
+model_args:
+  load_model: false  # bool
+  load_model_path: saved_models/saved_model.h5  # str
+  save_model: true  # bool
+  save_model_path: saved_models/saved_model.h5  # str
+  learning_rate: 1.0e-05  # float
+  batch_size: 32  # int
+  num_epochs: 60  # int
+  conv_channels:  # list
+  - 8  # list
+  - 16  # list
+  - 32  # list
+  kernel_sizes:  # list
+  - - 3  # list
+    - 3  # list
+  - - 3  # list
+    - 3  # list
+  - - 1  # list
+    - 3  # list
+  pool_sizes:  # list
+  - - 3  # list
+    - 3  # list
+  - - 3  # list
+    - 3  # list
+  - - 1  # list
+    - 3  # list
+  conv_padding:  # list
+  - same  # list
+  - same  # list
+  - same  # list
+  pool_padding:  # list
+  - valid  # list
+  - valid  # list
+  - valid  # list
+  conv_activation: relu  # str
+  projection_dim: 64  # int
+  attention_num_heads: 2  # int
+  attention_key_dim: 32  # int
+  attention_dropout: 0.1  # float
+  ffn_expansion_factor: 1.5  # float
+  ffn_activation: gelu  # str
+  classifier_dropout_rate: 0.3  # float
+  num_classes: 11  # int
+conversion_args:
+  quantize: true  # bool
+  out_dir: build/  # str
+dataset_args:
+  raw_dataset_path: /Volumes/LioDrive/Datasets/TinyRadar11G/data  # str
+  built_dataset_path: ./build/dataset/  # str
+  num_sessions: 5  # int
+  num_instances: 7  # int
+  sweep_frequency: 160  # int
+  range_points_per_sweep: 492  # int
+  stride: 32  # int
+  num_windows: 5  # int
+  sweeps_per_window: 32  # int
+  num_people: 25  # int
+  num_single_user_sessions: 0  # int
+  gestures:  # list
+  - PinchIndex  # list
+  - PinchPinky  # list
+  - FingerSlider  # list
+  - FingerRub  # list
+  - SlowSwipeRL  # list
+  - FastSwipeRL  # list
+  - Push  # list
+  - Pull  # list
+  - PalmTilt  # list
+  - Circle  # list
+  - PalmHold  # list
+  - NoHand  # list
+  - RandomGesture  # list
+  shuffle: true  # bool
+  clip: false  # bool
+  clip_percentile: 99.0  # float
+  dataset_shuffle_seed: 0  # int
+  train_split: 0.8  # float
+  val_split: 0.1  # float
+  test_split: 0.1  # float
+serial_args:
+  serial_port: /dev/tty.usbmodem103  # str
+  baudrate: 115200  # int
+  receive_chunk_size: 7  # int
+logging_args:
+  level: INFO  # str
+  log_to_file: true  # bool
+  log_dir_path: logs  # str
+  file_mode: a  # str
+  log_to_stdout: true  # bool
+  format: '%(asctime)s | %(name)s | %(levelname)s: %(message)s'  # str
+  datefmt: '%H:%M:%S'  # str
