@@ -24,7 +24,7 @@ class SPIInterface:
         assert array.ndim == 3
         assert array.shape[2] == 2
         assert array.dtype == np.complex64
-        print(array.shape)
+        # print(array.shape)
         
         num_frames = array.shape[0]
         frame_size = array.shape[1] * array.shape[2] * 8  # 492 × 2 × 8 = 7872
@@ -35,13 +35,13 @@ class SPIInterface:
             frame_bytes = array[i].astype(np.complex64).tobytes()
             # print(f"Sending frame {i}")
             offset = 0
-            time.sleep(0.0008)
+            time.sleep(0.005)
             while offset < frame_size:
                 chunk = frame_bytes[offset : offset + max_chunk_size]
                 self.spi.xfer2(list(chunk))
                 offset += len(chunk)
             if i % 32 == 31:
-                time.sleep(0.0266)
+                time.sleep(0.06)
 
     def read_byte(self):
         response = self.spi.xfer2([0x00])[0]
