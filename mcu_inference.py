@@ -48,7 +48,7 @@ def main(cmd_args: CmdLineArgs):
     num_mcu_currect = 0
     num_python_is_mcu = 0
     num_samples = 0
-    total_samples = len(dataset)
+    total_samples = 200 #len(dataset)
     if not QUANTIZED:
         golden_output = np.argmax(model.predict(dataset.get_inputs()), axis=-1)
 
@@ -74,13 +74,14 @@ def main(cmd_args: CmdLineArgs):
         num_mcu_currect += mcu_output == label
         num_python_is_mcu += python_output == mcu_output
         num_samples += 1
-        logger.debug(f"Sample {idx+1} / {total_samples}: Correct Output: {python_output} | MCU Output: {mcu_output} | Label: {label}")
+        logger.debug(f"Sample {idx+1} / {total_samples}: Expected Output: {python_output} | MCU Output: {mcu_output} | Label: {label}")
         logger.debug(f"Sample {idx+1} / {total_samples}: Running MCU Accuracy: {num_mcu_currect / num_samples*100:.2f}")
         logger.debug(f"Sample {idx+1} / {total_samples}: Computation Cycles: {cycles} --> {cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
 
-    print('\n' * 50)
+    print('\n' * 4)
     logger.info(f"Final MCU accuracy: {num_mcu_currect/num_samples*100:.2f}")
     logger.info(f"Total Cycles: {total_cycles} --> {total_cycles/args.serial_args.mcu_clock_frequency:.4f} seconds")
+    print('\n' * 4)
 
 
 if __name__ == '__main__':
