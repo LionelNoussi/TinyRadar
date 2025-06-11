@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
-import numpy as np
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 
 def plot_fft_heatmap(data, window, sampling_frequency_hz=160):
+    import numpy as np
+    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
     """
     Plot FFT magnitude heatmaps for the first window and both sensors.
     
@@ -57,6 +57,8 @@ def histogramm(arr):
 
 
 def plot_confusion_matrix(model, dataset):
+    import numpy as np
+    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
     y_true = dataset.test._labels
     y_pred = np.argmax(model.predict(dataset.test._data), axis=-1)
 
@@ -68,3 +70,17 @@ def plot_confusion_matrix(model, dataset):
     disp.plot(cmap=plt.cm.Blues, xticks_rotation=45) # type: ignore
     plt.title("Confusion Matrix")
     plt.show()
+
+
+def visualize_model(model):
+    import visualkeras
+    from keras.models import Sequential
+    from keras.layers import Dropout, Activation, Dense, Conv2D
+    filtered_layers = [layer for layer in model.layers if not isinstance(layer, Dropout)]
+    w_activation_layers = []
+    for layer in filtered_layers:
+        w_activation_layers.append(layer)
+        if isinstance(layer, Conv2D) or isinstance(layer, Dense):
+            layer.name += ' + ReLU'
+    m = Sequential(w_activation_layers)
+    visualkeras.layered_view(m, draw_volume=True, legend=True).show()
