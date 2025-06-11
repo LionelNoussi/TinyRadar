@@ -104,6 +104,7 @@ def animate_complex_heatmap(data: np.ndarray, filename='heatmap.mp4'):
         return [im]
 
     ani = animation.FuncAnimation(fig, update, frames=160, interval=1000/160, blit=True)
-
-    ani.save(filename, writer='ffmpeg', fps=160)
+    # ani.show()
+    # ani.save(filename, writer='ffmpeg', fps=160)
+    plt.show()
     plt.close(fig)

@@ -6,6 +6,7 @@ from utils.CommandArgs import CommandLineArgs
 from utils.logging_utils import setup_logger
 from utils.spi_utils import SPIInterface
 from utils.general import cprint
+from utils.visualize import animate_complex_heatmap
 
 
 class CmdArgs(CommandLineArgs):
@@ -31,6 +32,7 @@ def main(cmd_args):
 	while True:
 		sample_index = int(input(f"Send sample with index (0, {len(frames)}): "))
 		sample_input, sample_label = (frames[sample_index], labels[sample_index])
+		animate_complex_heatmap(sample_input)
 		interface.send([0x02])
 		time.sleep(0.1)
 		response = interface.read_byte()
