@@ -81,7 +81,7 @@ class SerialArgs(HierarchyArgs):
     ready_header: bytes = b'\x04'
 
 class SPIArgs(HierarchyArgs):
-    max_speed_hz: int = 10_000_000
+    max_speed_hz: int = 12_000_000
     mode: int = 0
     rate_hz: int = 160
     frame_size: int = 492 * 2 * 8

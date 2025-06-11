@@ -35,11 +35,13 @@ class SPIInterface:
             frame_bytes = array[i].astype(np.complex64).tobytes()
             # print(f"Sending frame {i}")
             offset = 0
-            time.sleep(0.01)
+            time.sleep(0.0008)
             while offset < frame_size:
                 chunk = frame_bytes[offset : offset + max_chunk_size]
                 self.spi.xfer2(list(chunk))
                 offset += len(chunk)
+            if i % 32 == 31:
+                time.sleep(0.0266)
 
     def read_byte(self):
         response = self.spi.xfer2([0x00])[0]

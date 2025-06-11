@@ -23,12 +23,12 @@ def main(cmd_args):
 	labels = np.load(labels_path)
 
 	# sample_index = random.randint(0, len(frames))
-	sample_index = 0
+	sample_index = 40
 
 	interface = SPIInterface(args.spi_args)
 
 	while True:
-		sample_index += 1
+		# sample_index += 1
 		sample_input, sample_label = (frames[sample_index], labels[sample_index])
 		input("Press Enter to send array:")
 		interface.send([0x02])
