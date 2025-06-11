@@ -80,6 +80,8 @@ class RuleChecker:
     def is_allowed_cmsis_nn_kernel_rule(self, dir_path: str, file_name: str) -> bool:
         if "cmsis_nn" not in dir_path:
             return True
+        if not self.cmsis_nn_enabled:
+            return False
         return any(file_name.startswith(op) for op in self.cmsis_nn_ops)
     
     def is_overridden_by_cmsis_nn_rule(self, dir_path: str, file_name: str) -> bool:
@@ -118,6 +120,7 @@ def copy_files(src_dir: str, dst_dir: str, recursive: bool):
 
 def main(cmd_args: CmdArgs):
     RESET = cmd_args.reset
+    RuleChecker.cmsis_nn_enabled = not cmd_args.no_cmsis
 
     # This script assumes the following directory structure for your MCU project:
 

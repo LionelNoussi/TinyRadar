@@ -74,14 +74,13 @@ def main(cmd_args: CmdLineArgs):
         num_mcu_currect += mcu_output == label
         num_python_is_mcu += python_output == mcu_output
         num_samples += 1
-        logger.debug(f"Sample {idx} / {total_samples}: Correct Output: {python_output} | MCU Output: {mcu_output} | Label: {label}")
-        logger.debug(f"Sample {idx} / {total_samples}: Running MCU Accuracy: {num_mcu_currect / num_samples*100:.2f}")
-        logger.debug(f"Sample {idx} / {total_samples}: MCU matches python: {python_output == mcu_output}")
-        logger.debug(f"Total Cycles: {total_cycles} --> {total_cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
+        logger.debug(f"Sample {idx+1} / {total_samples}: Correct Output: {python_output} | MCU Output: {mcu_output} | Label: {label}")
+        logger.debug(f"Sample {idx+1} / {total_samples}: Running MCU Accuracy: {num_mcu_currect / num_samples*100:.2f}")
+        logger.debug(f"Sample {idx+1} / {total_samples}: Computation Cycles: {cycles} --> {cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
 
-    logger.info(f"Python Accuracy: {num_python_correct/num_samples*100:.2f}")
-    logger.info(f"MCU accuracy: {num_mcu_currect/num_samples*100:.2f}")
-    logger.info(f"MCU matches python accuracy: {num_python_is_mcu/num_samples*100:.2f}")
+    print('\n' * 50)
+    logger.info(f"Final MCU accuracy: {num_mcu_currect/num_samples*100:.2f}")
+    logger.info(f"Total Cycles: {total_cycles} --> {total_cycles/args.serial_args.mcu_clock_frequency:.4f} seconds")
 
 
 if __name__ == '__main__':

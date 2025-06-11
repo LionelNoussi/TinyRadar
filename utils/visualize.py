@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def plot_fft_heatmap(data, window, sampling_frequency_hz=160):
@@ -77,10 +78,32 @@ def visualize_model(model):
     from keras.models import Sequential
     from keras.layers import Dropout, Activation, Dense, Conv2D
     filtered_layers = [layer for layer in model.layers if not isinstance(layer, Dropout)]
-    w_activation_layers = []
-    for layer in filtered_layers:
-        w_activation_layers.append(layer)
-        if isinstance(layer, Conv2D) or isinstance(layer, Dense):
-            layer.name += ' + ReLU'
-    m = Sequential(w_activation_layers)
+    m = Sequential(filtered_layers)
     visualkeras.layered_view(m, draw_volume=True, legend=True).show()
+
+
+def animate_complex_heatmap(data: np.ndarray, filename='heatmap.mp4'):
+    import matplotlib.animation as animation
+    """
+    Animate a 2x492 heatmap over time (160 frames).
+    
+    Args:
+        data (np.ndarray): Shape (160, 492, 2), dtype complex64
+    """
+    assert data.shape == (160, 492, 2), "Expected shape (160, 492, 2)"
+    abs_vals = np.abs(data).transpose(0, 2, 1)  # Shape: (160, 2, 492)
+
+    fig, ax = plt.subplots(figsize=(12, 2))  # Wider aspect ratio
+    im = ax.imshow(abs_vals[0], aspect='auto', vmin=abs_vals.min(), vmax=abs_vals.max(), cmap='viridis')
+    ax.set_title("Time Step 0")
+    ax.get_yaxis().set_visible(False)
+
+    def update(frame):
+        im.set_data(abs_vals[frame])
+        ax.set_title(f"Time Step {frame}")
+        return [im]
+
+    ani = animation.FuncAnimation(fig, update, frames=160, interval=1000/160, blit=True)
+
+    ani.save(filename, writer='ffmpeg', fps=160)
+    plt.close(fig)

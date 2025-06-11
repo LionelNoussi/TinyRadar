@@ -68,7 +68,8 @@ def main(cmd_args: CmdArgs):
 
     sample_index = 40
     test_frame = frames[sample_index]
-    label = dataset._labels[sample_index]
+    labels = dataset._labels
+    label = labels[sample_index]
 
     windowed_frame = test_frame.reshape(1, 5, 32, 492, 2)
 
@@ -93,22 +94,27 @@ def main(cmd_args: CmdArgs):
     actual_frame = q_model.quantize_inputs(raw_frame)
 
     if np.all(np.isclose(final_frame, actual_frame)):
-        cprint("Frames are equal! Continuing.", 'green')
+        # cprint("Frames are equal! Continuing.", 'green')
+        pass
     else:
         cprint("Frames are not exact in python! Aborting.", 'red')
         exit()
     
+    freq = args.serial_args.mcu_clock_frequency
     while True:
         try:
-            input("Press Enter to read cycles and output")
+            sample_idx = int(input(f"Receive output for sample index (0, {len(labels)}): "))
             # process_cycles = interface.read_uint32_integer()
-            read_cycles = interface.read_uint32_integer()
+            frame_cycles = interface.read_uint32_integer()
+            window_cycles = interface.read_uint32_integer()
             comp_cycles = interface.read_uint32_integer()
             mcu_output_class = interface.read_uint8_integer()
             # print(f"downsampling one frame took {process_cycles} many cycles --> {process_cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
-            print(f"Reading took {read_cycles} many cycles --> {read_cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
-            print(f"Computation took {comp_cycles} many cycles --> {comp_cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
-            sample = dataset._data[sample_index:sample_index+1]
+            print(f"Downsampling range points takes {frame_cycles} many cycles --> {frame_cycles / freq:.4f} seconds")
+            print(f"Processing one window takes {window_cycles} many cycles --> {window_cycles / freq:.4f} seconds")
+            print(f"Computation took {comp_cycles} many cycles --> {comp_cycles / freq:.4f} seconds")
+            label = labels[sample_idx]
+            sample = dataset._data[sample_idx:sample_idx+1]
             python_output_class = np.argmax(q_model.predict(sample), axis=-1)[0]
             print(f"Python Output: {python_output_class}. MCU Output: {mcu_output_class}. Label: {label}")
         except (TimeoutError, KeyboardInterrupt):

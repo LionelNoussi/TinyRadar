@@ -60,7 +60,8 @@ class MicrocontrollerInterface:
                 formatted_buffer = '\t' + '\n\t'.join(buffer.decode().split('\n'))
             except:
                 formatted_buffer = buffer
-            print(f"While waiting for header, also read this from UART:\n{formatted_buffer}".rstrip('\n\t'))
+            # print(f"DEBUG MESSAGES:\n{formatted_buffer}".rstrip('\n\t'))
+            print(f"{formatted_buffer}".rstrip('\n\t'))
 
         if not len(header):
             raise TimeoutError("No header received.")
