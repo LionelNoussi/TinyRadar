@@ -152,12 +152,6 @@ def main(cmd_args: CmdArgs):
             for name in dirs:
                 shutil.rmtree(os.path.join(root, name))
 
-    tflite_micro_root = os.path.join(destination_root, 'tensorflow')
-    os.makedirs(tflite_micro_root, exist_ok=True)
-
-    third_party_root = os.path.join(destination_root, 'third_party')
-    os.makedirs(third_party_root, exist_ok=True)
-
     # All paths left are relative to source_root
     # All paths right are relative to destination_root
     paths_to_copy = {

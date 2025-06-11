@@ -19,7 +19,6 @@ class ModelArgs(HierarchyArgs):
 
 
 class ConversionArgs(HierarchyArgs):
-    quantize: bool = True
     out_dir: str = "build/"
 
 
