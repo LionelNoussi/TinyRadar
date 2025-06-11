@@ -1,4 +1,5 @@
-import time, os
+import time, os, sys
+sys.path.insert(0, os.getcwd())
 import numpy as np
 
 from utils.CommandArgs import CommandLineArgs
