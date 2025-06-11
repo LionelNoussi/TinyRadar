@@ -71,7 +71,7 @@ class SerialArgs(HierarchyArgs):
     mcu_clock_frequency: int = 80000000
     array_size_in_bytes: int = 13120 # 52480    # how many bytes the microcontroller expects to receive at once.
     ser_timeout: int = 1        # seconds
-    read_timeout: int = 20    # seconds
+    read_timeout: int = 10    # seconds
     start_signal: bytes = b'\x02'
     stop_header: bytes = b'\x01'
     inference_header: bytes = b'\x02'

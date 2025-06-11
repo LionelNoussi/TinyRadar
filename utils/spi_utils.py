@@ -1,4 +1,9 @@
-import spidev, time
+import time
+
+try:
+    import spidev # type: ignore
+except: pass
+
 from args import SPIArgs
 import numpy as np
 
@@ -12,7 +17,7 @@ class SPIInterface:
         self.spi.max_speed_hz = spi_args.max_speed_hz
         self.spi.mode = spi_args.mode
 
-    def send(self, message: bytearray):
+    def send(self, message: list):
         self.spi.xfer2(message)
 
     def send_array(self, array: np.ndarray):

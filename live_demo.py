@@ -68,7 +68,7 @@ def main(cmd_args: CmdArgs):
         logger.info(f"Computation took {cycles} many cycles --> {cycles / args.serial_args.mcu_clock_frequency:.4f} seconds")
 
     if FULL_OUTPUT:
-        q_mcu_outputs = interface.read_int8_array()
+        q_mcu_outputs = interface.read_int_array()
         mcu_outputs = q_model.dequantize_outputs(q_mcu_outputs)
 
     mcu_output_class = interface.read_uint8_integer()

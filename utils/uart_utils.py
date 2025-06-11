@@ -29,7 +29,8 @@ class MicrocontrollerInterface:
 
     def readlines(self):
         lines = self.ser.readlines()
-        print("MCU Printf Outputs:")
+        if len(lines):
+            print("MCU Printf Outputs:")
         for line in lines:
             print('\t' + line.decode().rstrip('\r\n'))
 
@@ -41,15 +42,18 @@ class MicrocontrollerInterface:
         buffer = b''
         
         start_time = time.time()
-        while time.time() - start_time < self.args.read_timeout:
+        try:
+            while time.time() - start_time < self.args.read_timeout:
 
-            header = self.ser.read(1)
+                header = self.ser.read(1)
 
-            if header == target_header:
-                break  # Found the header, proceed
-            elif len(header) != 0:
-                # If something else was read, store it in the buffer
-                buffer += header
+                if header == target_header:
+                    break  # Found the header, proceed
+                elif len(header) != 0:
+                    # If something else was read, store it in the buffer
+                    buffer += header
+        except KeyboardInterrupt:
+            pass
 
         if self.verbose and len(buffer):     # if verbose, print the buffered bytes which were read.
             try:
@@ -116,21 +120,21 @@ class MicrocontrollerInterface:
 
         # Create an integer from the read byte
         return int.from_bytes(output, byteorder='little', signed=False)
-    
-    def read_int8_array(self):
+
+    def read_int_array(self, signed=True):
         self._wait_for_header(self.args.array_header)
 
         # When receiving an array, the MCU first sends the number of elements
-        num_elements = self.ser.read(1)
-        if len(num_elements) != 1:
+        b_num_elements = self.ser.read(4)
+        if len(b_num_elements) == 0:
             raise TimeoutError("No or incomplete data received from MCU.")
         
-        num_elements = int.from_bytes(num_elements, byteorder='little', signed=False)
+        num_elements = int.from_bytes(b_num_elements, byteorder='big', signed=False)
         
         outputs = []
-        for i in range(num_elements):
+        for _ in range(num_elements):
             element = self.ser.read(1)
-            integer = int.from_bytes(element, byteorder='little', signed=True)
+            integer = int.from_bytes(element, byteorder='little', signed=signed)
             outputs.append(integer)
 
-        return outputs
+        return np.array(outputs).astype('<i8')
