@@ -51,6 +51,33 @@ class QuantizedModel:
         return outputs
 
 
+def build_models_for_sweep():
+    model = models.Sequential([
+        layers.Input(shape=(16, 82, 10)),
+
+        # Less aggressive downsampling early
+        layers.Conv2D(12, kernel_size=3, strides=1, padding='same', activation='relu'),
+        layers.Conv2D(12, kernel_size=3, strides=2, padding='same', activation='relu'),
+        layers.SpatialDropout2D(0.3),
+
+        layers.Conv2D(24, kernel_size=3, strides=1, padding='same', activation='relu'),
+        layers.Conv2D(24, kernel_size=3, strides=2, padding='same', activation='relu'),
+        layers.SpatialDropout2D(0.3),
+
+        layers.Conv2D(32, kernel_size=3, strides=1, padding='same', activation='relu'),
+        layers.Conv2D(32, kernel_size=3, strides=2, padding='same', activation='relu'),
+
+        layers.Conv2D(64, kernel_size=3, padding='same', activation='relu'),  # Deep feature layer
+
+        layers.Dropout(0.4),
+
+        layers.GlobalAveragePooling2D(),
+        layers.Dense(96, activation='relu', kernel_regularizer=regularizers.l2(1e-5)),
+        layers.Dense(11, activation='softmax')
+    ])
+    return model
+
+
 def get_model(model_args: ModelArgs, quantized: bool = False) -> keras.Model:
     logger = get_logger()
 
@@ -82,11 +109,11 @@ def get_model(model_args: ModelArgs, quantized: bool = False) -> keras.Model:
     #     layers.Dense(5, activation='softmax')
     # ])
     model = models.Sequential([
-        layers.Input(shape=(16, 82, 10)),
+        layers.Input(shape=input_shape),
 
         # Less aggressive downsampling early
         layers.Conv2D(12, kernel_size=3, strides=1, padding='same', activation='relu'),
-        layers.Conv2D(12, kernel_size=3, strides=2, pading='same', activation='relu'),
+        layers.Conv2D(12, kernel_size=3, strides=2, padding='same', activation='relu'),
         layers.SpatialDropout2D(0.3),
 
         layers.Conv2D(16, kernel_size=3, strides=1, padding='same', activation='relu'),
@@ -104,6 +131,7 @@ def get_model(model_args: ModelArgs, quantized: bool = False) -> keras.Model:
         layers.Dense(96, activation='relu', kernel_regularizer=regularizers.l2(1e-5)),
         layers.Dense(11, activation='softmax')
     ])
+    # model = build_smaller_models()
 
     model.build(input_shape=(None, 16, 82, 10))
     if quantized:

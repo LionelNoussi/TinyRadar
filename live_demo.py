@@ -55,7 +55,6 @@ def main(cmd_args: CmdArgs):
     # Start serial communication with MCU and send start signal
     logger.info("Starting Microcontroller Interface")
     interface = MicrocontrollerInterface(args.serial_args, verbose=True)
-    interface.start()
     interface.readlines()
 
     # Send input array to MCU

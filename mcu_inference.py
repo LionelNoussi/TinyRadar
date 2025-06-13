@@ -41,7 +41,6 @@ def main(cmd_args: CmdLineArgs):
 
     interface = MicrocontrollerInterface(args.serial_args)
     interface.drain()
-    interface.start()
 
     total_cycles = 0
     num_python_correct = 0

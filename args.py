@@ -8,8 +8,9 @@ from utils.HierarchyArgs import HierarchyArgs
 class ModelArgs(HierarchyArgs):
     load_model: bool = True
     load_model_path: str = 'saved_models/saved_model_87.h5'
+    # load_model_path: str = 'saved_models/model_size_v_accuracy/model5.h5'
     tflite_model_path: str = 'build/my_model_11G_86p67.tflite'
-    # tflite_model_path: str = 'build/my_model.tflite'
+    # tflite_model_path: str = 'build/model_size_v_accuracy/model1.tflite'
     save_model: bool = True
     save_model_path: str = 'saved_models/saved_model.h5'
     checkpoint_dir: str = 'saved_models/checkpoints/'
